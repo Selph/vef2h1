@@ -10,7 +10,7 @@ async function indexRoute(req, res) {
   const products = await listProducts();
 
   res.render('index', {
-    title: 'Matseðill',
+    title: 'RFC - Reykjavík Fried Chicken',
     categories,
     products,
   });
