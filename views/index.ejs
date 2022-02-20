@@ -1,0 +1,34 @@
+<%- include('header') -%>
+
+<h1><%= title %></h1>
+
+<% if (products.length === 0) { %>
+  <p>Engar vörur!</p>
+<% } else { %>
+  <h2>Vöruúrval:</h2>
+<div class="products">
+<% categories.forEach((category) => { %>
+  <h3 class="category"><%= category.title %></h3>
+  <div class="product">
+  <% products.forEach((product) => { %>
+    <% if (product.category === category.id) { %>
+    <div class="product-flex">
+      <p class="product-title"><%= product.title %></p>
+      <img class="image" src="<%= product.image %>" alt="picture">
+      <p class="product-description"><%= product.description %></p>
+      <p class="product-price"><%= product.price %> kr,-</p>
+    </div>
+    <% } %>
+  <% }) %>
+  </div>
+  <hr>
+<% }) %>
+</div>
+</ul>
+<div class="login">
+  <p class="login-text"><a href="/admin/login">Innskráning stjórnanda</a></p>
+</div>
+<% } %>
+
+
+<%- include('footer') -%>

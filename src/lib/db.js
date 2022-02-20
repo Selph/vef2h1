@@ -24,7 +24,7 @@ pool.on('error', (err) => {
   process.exit(-1);
 });
 
-export async function query(q, values = []) {
+export async function query(q, values) {
   let client;
 
   try {
@@ -43,6 +43,28 @@ export async function query(q, values = []) {
   } finally {
     client.release();
   }
+}
+
+export async function listProducts(){
+  const q = `
+    SELECT * FROM products`
+
+  const result = await query(q);
+
+  if (result) return result.rows;
+
+  return [];
+}
+
+export async function listCategories(){
+  const q = `
+    SELECT * FROM categories`
+
+  const result = await query(q);
+
+  if (result) return result.rows;
+
+  return [];
 }
 
 export async function createSchema(schemaFile = SCHEMA_FILE) {

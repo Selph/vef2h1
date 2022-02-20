@@ -6,6 +6,7 @@ import { Strategy } from 'passport-local';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { isInvalid } from './lib/template-helpers.js';
+import { indexRouter } from './routes/index-routes.js';
 
 
 dotenv.config();
@@ -87,6 +88,7 @@ app.locals = {
 app.locals.isInvalid = isInvalid;
 
   // TODO Bæta við routes
+app.use('/', indexRouter)
 
 /** Middleware sem sér um 404 villur. */
 app.use((req, res) => {
