@@ -1,6 +1,7 @@
 import { readFile } from 'fs/promises';
 // eslint-disable-next-line import/no-unresolved
 import pg from 'pg';
+import xss from 'xss';
 
 const SCHEMA_FILE = './sql/insert.sql';
 const DROP_SCHEMA_FILE = './sql/drop.sql';
@@ -45,26 +46,124 @@ export async function query(q, values) {
   }
 }
 
-export async function listProducts(){
-  const q = `
-    SELECT * FROM products`
+export async function singleQuery(_query, values = []) {
+  const result = await query(_query, values);
 
-  const result = await query(q);
+  if (result.rows && result.rows.length === 1) {
+    return result.rows[0];
+  }
 
-  if (result) return result.rows;
-
-  return [];
+  return null;
 }
 
-export async function listCategories(){
-  const q = `
+export async function deleteQuery(_query, values = []) {
+  const result = await query(_query, values);
+
+  return result.rowCount;
+}
+
+// TODO: raða eftir dagsetningum
+export async function listProducts(req, res){
+
+  const products = await query(`
+    SELECT * FROM products;`
+  );
+
+  return res.json(products.rows);
+}
+
+export async function listCategories(req, res){
+
+  const categories = await query(`
     SELECT * FROM categories`
+  );
 
-  const result = await query(q);
+  return res.json(categories.rows);
+}
 
-  if (result) return result.rows;
+export async function createCategory(req, res) {
+  const {
+    title
+  } = req.body;
 
-  return [];
+  try {
+    const createdCategory = await singleQuery(
+      `
+      INSERT INTO categories
+        (title)
+      VALUES
+        ($1)
+      RETURNING id, title;
+    `,
+      [xss(title)]
+    );
+    return res.status(201).json(createdCategory);
+  } catch (e) {
+    console.error('gat ekki búið til flokk', e);
+  }
+  return res.status(500).json(null);
+}
+
+//TODO: tengja image url við cloudinary.. og tryggja að image sé rétt type(image er character í db?)
+export async function createProduct(req, res) {
+  const {
+    title, price, description, image, category
+  } = req.body;
+
+  try {
+    const createdProduct = await singleQuery(
+      `
+      INSERT INTO products
+        (title, price, description, image, category)
+      VALUES
+        ($1, $2, $3, $4, $5)
+      RETURNING id, title, price, description, image, category;
+    `,
+      [xss(title), xss(price), xss(description), xss(image), xss(category)]
+    );
+    return res.status(201).json(createdProduct);
+  } catch (e) {
+    console.error('gat ekki búið til vöru', e);
+  }
+  return res.status(500).json(null);
+}
+
+export async function deleteProduct(req, res) {
+  const { id } = req.params;
+
+  try {
+    const deletionRowCount = await deleteQuery(
+      'DELETE FROM products WHERE id = $1;', [id],
+    );
+
+    if (deletionRowCount === 0) {
+      return res.status(404).end();
+    }
+
+    return res.status(200).json({});
+  } catch (e) {
+    console.error(`gat ekki eytt vöru`, e);
+  }
+  return res.status(500).json(null);
+}
+
+export async function deleteCategory(req, res) {
+  const { id } = req.params;
+
+  try {
+    const deletionRowCount = await deleteQuery(
+      'DELETE FROM categories WHERE id = $1;', [id],
+    );
+
+    if (deletionRowCount === 0) {
+      return res.status(404).end();
+    }
+
+    return res.status(200).json({});
+  } catch (e) {
+    console.error(`gat ekki eytt flokk`, e);
+  }
+  return res.status(500).json(null);
 }
 
 export async function createSchema(schemaFile = SCHEMA_FILE) {

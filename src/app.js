@@ -34,14 +34,55 @@ app.use(session({
   saveUninitialized: false
 }));
 
-const path = dirname(fileURLToPath(import.meta.url));
+app.use(express.json());
+app.use(passport.initialize());
 
-app.use(express.static(join(path, '../public')));
+app.use((req, res, next) => {
+  if (req.method === 'POST' || req.method === 'PATCH') {
+    if (
+      req.headers['content-type']
+      && (
+        req.headers['content-type'] !== 'application/json'
+        && !req.headers['content-type'].startsWith('multipart/form-data;')
+      )) {
+      return res.status(400).json({ error: 'body must be json or form-data' });
+    }
+  }
+  return next();
+});
 
-app.set('views', join(path, '../views'));
-app.set('view engine', 'ejs');
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.locals = {
+  isInvalid,
+};
+
+  // TODO Bæta við routes
+app.use('/', indexRouter)
+
+/** Middleware sem sér um 404 villur. */
+app.use((req, res, next) => { // eslint-disable-line
+  res.status(404).json({ error: 'Not found' });
+});
+
+app.use((err, req, res, next) => { // eslint-disable-line
+  console.error(err);
+
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    return res.status(400).json({ error: 'Invalid json' });
+  }
+
+  return res.status(500).json({ error: 'Internal server error' });
+});
+
+app.listen(port, () => {
+  console.info(`Server running at http://localhost:${port}/`);
+});
 
 
+/*
 async function strat(username, password, done) {
   try {
     const user = await findByUsername(username);
@@ -77,33 +118,4 @@ passport.deserializeUser(async (id, done) => {
     return done(error)
   }
 });
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.locals = {
-  // TODO hjálparföll fyrir template
-};
-
-app.locals.isInvalid = isInvalid;
-
-  // TODO Bæta við routes
-app.use('/', indexRouter)
-
-/** Middleware sem sér um 404 villur. */
-app.use((req, res) => {
-  const title = 'Síða fannst ekki';
-  res.status(404).render('error', { title });
-});
-
-/** Middleware sem sér um villumeðhöndlun. */
-// eslint-disable-next-line no-unused-vars
-app.use((err, req, res, next) => {
-  console.error(err);
-  const title = 'Villa kom upp';
-  res.status(500).render('error', { title });
-});
-
-app.listen(port, () => {
-  console.info(`Server running at http://localhost:${port}/`);
-});
+*/
