@@ -1,5 +1,6 @@
 import { readFile } from 'fs/promises';
 // eslint-disable-next-line import/no-unresolved
+import bcrypt from 'bcrypt';
 import pg from 'pg';
 import xss from 'xss';
 
@@ -164,6 +165,44 @@ export async function deleteCategory(req, res) {
     console.error(`gat ekki eytt flokk`, e);
   }
   return res.status(500).json(null);
+}
+
+export async function findById(id) {
+  const q = 'SELECT * FROM users WHERE id = $1';
+
+  try {
+    const result = await query(q, [id]);
+
+    if (result.rowCount === 1) {
+      return result.rows[0];
+    }
+  } catch (e) {
+    console.error('Gat ekki fundið notanda eftir id');
+  }
+
+  return null;
+}
+
+export async function comparePasswords(password, hash) {
+  const result = await bcrypt.compare(password, hash);
+  return result;
+}
+
+export async function findByUsername(username) {
+  const q = 'SELECT * FROM users WHERE username = $1';
+
+  try {
+    const result = await query(q, [username]);
+
+    if (result.rowCount === 1) {
+      return result.rows[0];
+    }
+  } catch (e) {
+    console.error('Gat ekki fundið notanda eftir notendnafni');
+    return null;
+  }
+
+  return false;
 }
 
 export async function createSchema(schemaFile = SCHEMA_FILE) {

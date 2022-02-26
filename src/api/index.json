@@ -1,0 +1,121 @@
+{
+  "menu": {
+    "menu": {
+      "href": "/menu",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    "category": {
+      "href": "/menu?category={category}",
+      "methods": [
+        "GET"
+      ]
+    },
+    "search": {
+      "href": "/menu?search={query}",
+      "methods": [
+        "GET"
+      ]
+    },
+    "item": {
+      "href": "/menu/{id}",
+      "methods": [
+        "GET",
+        "PATCH",
+        "DELETE"
+      ]
+    }
+  },
+  "categories": {
+    "categories": {
+      "href": "/categories",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    "category-item": {
+      "href": "/categories/{id}",
+      "methods": [
+        "PATCH",
+        "DELETE"
+      ]
+    }
+  },
+  "cart": {
+    "cart-item": {
+      "href": "/cart/{cartid}",
+      "methods": [
+        "GET",
+        "POST",
+        "DELETE"
+      ]
+    },
+    "cart-line": {
+      "href": "/cart/{cartid}/line/{id}",
+      "methods": [
+        "GET",
+        "PATCH",
+        "DELETE"
+      ]
+    }
+  },
+  "orders": {
+    "orders": {
+      "href": "/orders",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    "order": {
+      "href": "/orders/{id}",
+      "methods": [
+        "GET"
+      ]
+    },
+    "status": {
+      "href": "/orders/{id}/status",
+      "methods": [
+        "GET",
+        "PATCH"
+      ]
+    }
+  },
+  "users": {
+    "users": {
+      "href": "/users",
+      "methods": [
+        "GET"
+      ]
+    },
+    "user": {
+      "href": "/users/{id}",
+      "methods": [
+        "GET",
+        "PATCH"
+      ]
+    },
+    "register": {
+      "href": "/users/register",
+      "methods": [
+        "POST"
+      ]
+    },
+    "login": {
+      "href": "/users/login",
+      "methods": [
+        "POST"
+      ]
+    },
+    "me": {
+      "href": "/users/me",
+      "methods": [
+        "GET",
+        "PATCH"
+      ]
+    }
+  }
+}

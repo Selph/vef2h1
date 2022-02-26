@@ -135,7 +135,8 @@ CREATE TABLE IF NOT EXISTS users (
   id serial primary key,
   name character varying(64) not null,
   username character varying(64) not null unique,
-  password character varying(256) not null
+  password character varying(256) not null,
+  admin boolean default false
 );
 
-INSERT INTO users (name, username, password) VALUES ('admin', 'admin', '$2b$11$HRLp260MPwDT8/f8LFTdAuabMsDKY8ItHtHVVv2M65dC24//QOTni');
+INSERT INTO users (name, username, password, admin) VALUES ('admin', 'admin', '$2b$11$HRLp260MPwDT8/f8LFTdAuabMsDKY8ItHtHVVv2M65dC24//QOTni', true);
