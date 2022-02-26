@@ -8,21 +8,37 @@ import { jwtOptions,
          requireNotSelf,
          requireSameUser,
          tokenLifetime } from '../auth/passport.js';
-import { comparePasswords, findByUsername, query } from '../db.js';
+import { comparePasswords, findByUsername, pagedQuery, query } from '../db.js';
 import { sanitation } from '../validation/sanitation.js';
 import { validationUser } from '../validation/validators.js';
 import { validationCheck } from '../validation/helper.js';
 import { catchErrors } from '../utils/catch-errors.js';
 import { findById, conditionalUpdate } from '../db.js';
 import { isString } from '../utils/misc.js';
+import { addPageMetadata } from '../utils/addPageMetadata.js';
 
 export const router = express.Router();
 
 
 async function listUsers(req, res) {
-  const userQuery = 'select id, name, username, email, admin from users';
-  const users = await query(userQuery);
-  return res.json(users.rows);
+  const { offset = 0, limit = 10 } = req.query;
+
+  const userQuery =
+  `SELECT
+    id, name, username, email, admin
+   FROM
+    users
+   ORDER BY id ASC`;
+
+  const users = await pagedQuery(userQuery, [], { offset, limit });
+
+  const usersWithPage = addPageMetadata(
+    users,
+    req.path,
+    { offset, limit, lengt: users.items.length },
+  );
+
+  return res.json(usersWithPage);
 }
 
 async function getUser(req, res) {
@@ -130,8 +146,11 @@ const patchUser = async (req,res) => {
 
   const values = [
     isString(body.email) ? xss(body.email) : null,
-    isString(body.password) ? xss(body.password) : null,
+    isString(body.password) ? await bcrypt.hash(xss(body.password), 11) : null,
   ];
+
+  console.log(fields)
+  console.log(values)
 
   const result = await conditionalUpdate('users', id, fields, values);
 
@@ -139,7 +158,7 @@ const patchUser = async (req,res) => {
     return res.status(400).json({ error: 'Nothing to update' });
   }
 
-  return res.status(200).json(result.rows[0]);
+  return res.status(200).json({ message: 'success' });
 }
 
 
