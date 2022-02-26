@@ -51,6 +51,52 @@ export function requireAuthentication(req, res, next) {
   )(req, res, next);
 }
 
+export function requireNotSelf(req, res, next) {
+  return passport.authenticate(
+    'jwt',
+    { session: false },
+    async (err, user, info) => {
+      if (err) {
+        return next(err);
+      }
+
+      const userInfo = await findById(req.params.id);
+
+      if (user.id === userInfo.id) {
+        const error = 'user cannot change his own admin privileges';
+        return res.status(401).json({ error });
+      }
+
+      // Látum notanda vera aðgengilegan í rest af middlewares
+      req.user = user;
+      return next();
+    },
+  )(req, res, next);
+}
+
+export function requireSameUser(req, res, next) {
+  return passport.authenticate(
+    'jwt',
+    { session: false },
+    async (err, user, info) => {
+      if (err) {
+        return next(err);
+      }
+
+      const userInfo = await findById(req.params.id);
+
+      if (user.id !== userInfo.id) {
+        const error = 'user cannot change other users data';
+        return res.status(401).json({ error });
+      }
+
+      // Látum notanda vera aðgengilegan í rest af middlewares
+      req.user = user;
+      return next();
+    },
+  )(req, res, next);
+}
+
 export function addUserIfAuthenticated(req, res, next) {
   return passport.authenticate(
     'jwt',

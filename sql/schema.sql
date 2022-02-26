@@ -136,7 +136,8 @@ CREATE TABLE IF NOT EXISTS users (
   name character varying(64) not null,
   username character varying(64) not null unique,
   password character varying(256) not null,
+  email VARCHAR(256) NOT NULL UNIQUE,
   admin boolean default false
 );
 
-INSERT INTO users (name, username, password, admin) VALUES ('admin', 'admin', '$2b$11$HRLp260MPwDT8/f8LFTdAuabMsDKY8ItHtHVVv2M65dC24//QOTni', true);
+INSERT INTO users (name, username, password, email, admin) VALUES ('admin', 'admin', '$2b$11$HRLp260MPwDT8/f8LFTdAuabMsDKY8ItHtHVVv2M65dC24//QOTni', 'ultradmin@admin.com', true);

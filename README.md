@@ -23,10 +23,10 @@ heroku run npm run setup
 
 ## Skipanir
 
-Til að athuga hvort test séu rétt útfærð keyra coverage, fyrir eslint og stylelint keyra lint
+Til að athuga hvort test séu rétt útfærð keyra test og fyrir eslint keyra lint
 
 ```bash
-npm run coverage
+npm run test
 npm run lint
 ```
 
@@ -34,32 +34,30 @@ npm run lint
 
 ### Dependencies
 
-`bcrypt`
-`cookie-parser`
-`dotenv`
-`dotenv-cli`
-`ejs`
-`express`
-`express-session`
-`express-validator`
-`passport`
-`passport-local`
-`pg`
-`xss`
+```
+bcrypt
+dotenv
+dotenv-cli
+express
+express-validator
+passport
+passport-jwt
+passport-local
+pg
+xss
+```
 
 ### Dev dependencies
 
-`concurrently`
-`eslint`
-`eslint-config-airbnb-base`
-`eslint-config-prettier`
-`eslint-plugin-import`
-`jest`
-`nodemon`
-`prettier`
-`stylelint`
-`stylelint-config-sass-guidelines`
-`stylelint-config-standard`
+```concurrently
+eslint
+eslint-config-airbnb-base
+eslint-config-prettier
+eslint-plugin-import
+jest
+node-fetch
+nodemon
+```
 
 ## Admin aðgangur
 
@@ -68,16 +66,23 @@ lykilorð:    `1234`
 
 ## env skrár
 
-Það þarf að setja réttar upplýsingar í .env.test skrárnar
+Það þarf að setja réttar upplýsingar í .env og .env.test skrárnar:
+
+```
+DATABASE_URL
+JWT_SECRET
+TOKEN_LIFETIME
+```
 
 ## Heroku
 
 https://vef2h1-rfc.herokuapp.com
 
-> Útgáfa 0.3
+> Útgáfa 0.4
 
 | Útgáfa | Breyting      |
 | ------ | ------------- |
 | 0.1    | Bæta Readme   |
 | 0.2    | Base files    |
 | 0.3    | Database      |
+| 0.4    | Users         |

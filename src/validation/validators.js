@@ -46,6 +46,12 @@ export const passwordValidator = body('password')
   .isLength({ min: 3, max: 256 })
   .withMessage('password is required, min 3 characters, max 256 characters');
 
+export const emailValidator = body('email')
+  .if(isPatchingAllowAsOptional)
+  .isLength({ min: 1, max: 256 })
+  .isEmail()
+  .withMessage('email is required, max 256 characters');
+
 export const usernameDoesNotExistValidator = body('username')
   .custom(async (username) => {
     const user = await findByUsername(username);
@@ -85,7 +91,8 @@ export const usernameAndPaswordValidValidator = body('username')
 export const validationUser = [
   nameValidator,
   usernameValidator,
-  passwordValidator
+  passwordValidator,
+  emailValidator
 ]
 
 export function atLeastOneBodyValueValidator(fields) {
