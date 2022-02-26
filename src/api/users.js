@@ -10,7 +10,7 @@ import { jwtOptions,
          tokenLifetime } from '../auth/passport.js';
 import { comparePasswords, findByUsername, pagedQuery, query } from '../db.js';
 import { sanitation } from '../validation/sanitation.js';
-import { validationUser } from '../validation/validators.js';
+import { pagingQuerystringValidator, validationUser } from '../validation/validators.js';
 import { validationCheck } from '../validation/helper.js';
 import { catchErrors } from '../utils/catch-errors.js';
 import { findById, conditionalUpdate } from '../db.js';
@@ -35,7 +35,7 @@ async function listUsers(req, res) {
   const usersWithPage = addPageMetadata(
     users,
     req.path,
-    { offset, limit, lengt: users.items.length },
+    { offset, limit, length: users.items.length },
   );
 
   return res.json(usersWithPage);
@@ -162,7 +162,11 @@ const patchUser = async (req,res) => {
 }
 
 
-router.get('/', requireAuthentication, requireAdmin, catchErrors(listUsers));
+router.get('/', requireAuthentication,
+                requireAdmin,
+                pagingQuerystringValidator,
+                validationCheck,
+                catchErrors(listUsers));
 router.get('/me', requireAuthentication, getUserFromToken, catchErrors(getMyUser));
 router.patch('/me', requireAuthentication,
                     getUserFromToken,

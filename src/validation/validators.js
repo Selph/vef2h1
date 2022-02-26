@@ -1,9 +1,18 @@
-import { body, param, validationResult } from 'express-validator';
+import { body, param, query } from 'express-validator';
 import { comparePasswords, findByUsername } from '../db.js';
 import { LoginError } from '../errors.js';
 import { resourceExists } from './helper.js';
 
-
+export const pagingQuerystringValidator = [
+  query('offset')
+    .optional()
+    .isInt({ min: 0 })
+    .withMessage('query parameter "offset" must be an int, 0 or larget'),
+  query('limit')
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage('query parameter "limit" must be an int, larger than 0'),
+];
 
 export const isPatchingAllowAsOptional = (value, { req }) => {
   if (!value && req.method === 'PATCH') {

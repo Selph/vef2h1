@@ -87,16 +87,6 @@ export async function deleteQuery(_query, values = []) {
   return result.rowCount;
 }
 
-// TODO: raða eftir dagsetningum
-export async function listProducts(req, res){
-
-  const products = await query(`
-    SELECT * FROM products;`
-  );
-
-  return res.json(products.rows);
-}
-
 export async function listCategories(req, res){
 
   const categories = await query(`
