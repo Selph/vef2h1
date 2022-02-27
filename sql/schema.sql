@@ -2,8 +2,8 @@ DROP TABLE IF EXISTS categories CASCADE;
 DROP TABLE IF EXISTS products CASCADE;
 DROP TABLE IF EXISTS baskets CASCADE;
 DROP TABLE IF EXISTS orders CASCADE;
-DROP TABLE IF EXISTS basket_lines;
-DROP TABLE IF EXISTS order_lines CASCADE;
+DROP TABLE IF EXISTS basket_items;
+DROP TABLE IF EXISTS order_items CASCADE;
 DROP TABLE IF EXISTS order_status;
 DROP TABLE IF EXISTS users;
 
@@ -60,29 +60,30 @@ insert into baskets(uid) values('31df2d79-2a43-4da0-a17e-6c65f0a78320');
 insert into baskets(uid) values('6810fb1d-14d5-4cd3-a30c-6ed2fb0e44bf');
 
 CREATE TABLE IF NOT EXISTS basket_items (
-  id serial,
+  id serial primary key,
+  product_id int not null,
   uid uuid not null,
   amount int not null check (amount > 0),
-    foreign key(id) references products(id),
+    foreign key(product_id) references products(id),
     foreign key(uid) references baskets(uid)
 );
 
-insert into basket_items(id, uid, amount) values(1, 'f19d71d1-a3ea-49ba-a3ee-1fc81ea7c5c0', 2);
-insert into basket_items(id, uid, amount) values(2, 'f19d71d1-a3ea-49ba-a3ee-1fc81ea7c5c0', 2);
-insert into basket_items(id, uid, amount) values(11, 'f19d71d1-a3ea-49ba-a3ee-1fc81ea7c5c0', 2);
+insert into basket_items(product_id, uid, amount) values(1, 'f19d71d1-a3ea-49ba-a3ee-1fc81ea7c5c0', 2);
+insert into basket_items(product_id, uid, amount) values(2, 'f19d71d1-a3ea-49ba-a3ee-1fc81ea7c5c0', 2);
+insert into basket_items(product_id, uid, amount) values(11, 'f19d71d1-a3ea-49ba-a3ee-1fc81ea7c5c0', 2);
 
-insert into basket_items(id, uid, amount) values(2, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 1);
-insert into basket_items(id, uid, amount) values(1, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 1);
-insert into basket_items(id, uid, amount) values(7, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 2);
-insert into basket_items(id, uid, amount) values(8, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 1);
-insert into basket_items(id, uid, amount) values(9, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 1);
-insert into basket_items(id, uid, amount) values(10, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 1);
-insert into basket_items(id, uid, amount) values(12, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 2);
+insert into basket_items(product_id, uid, amount) values(2, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 1);
+insert into basket_items(product_id, uid, amount) values(1, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 1);
+insert into basket_items(product_id, uid, amount) values(7, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 2);
+insert into basket_items(product_id, uid, amount) values(8, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 1);
+insert into basket_items(product_id, uid, amount) values(9, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 1);
+insert into basket_items(product_id, uid, amount) values(10, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 1);
+insert into basket_items(product_id, uid, amount) values(12, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 2);
 
-insert into basket_items(id, uid, amount) values(5, '6810fb1d-14d5-4cd3-a30c-6ed2fb0e44bf', 1);
-insert into basket_items(id, uid, amount) values(6, '6810fb1d-14d5-4cd3-a30c-6ed2fb0e44bf', 1);
-insert into basket_items(id, uid, amount) values(7, '6810fb1d-14d5-4cd3-a30c-6ed2fb0e44bf', 2);
-insert into basket_items(id, uid, amount) values(12, '6810fb1d-14d5-4cd3-a30c-6ed2fb0e44bf', 2);
+insert into basket_items(product_id, uid, amount) values(5, '6810fb1d-14d5-4cd3-a30c-6ed2fb0e44bf', 1);
+insert into basket_items(product_id, uid, amount) values(6, '6810fb1d-14d5-4cd3-a30c-6ed2fb0e44bf', 1);
+insert into basket_items(product_id, uid, amount) values(7, '6810fb1d-14d5-4cd3-a30c-6ed2fb0e44bf', 2);
+insert into basket_items(product_id, uid, amount) values(12, '6810fb1d-14d5-4cd3-a30c-6ed2fb0e44bf', 2);
 
 
 CREATE TABLE IF NOT EXISTS orders (
@@ -96,29 +97,30 @@ insert into orders(uid,name) values('31df2d79-2a43-4da0-a17e-6c65f0a78320', 'Ól
 insert into orders(uid,name) values('6810fb1d-14d5-4cd3-a30c-6ed2fb0e44bf', 'Bingi');
 
 CREATE TABLE IF NOT EXISTS order_items (
-  id serial,
-  uid uuid primary key,
+  id serial primary key,
+  product_id int not null,
+  uid uuid not null,
   amount int not null check (amount > 0),
-    foreign key(id) references products(id),
+    foreign key(product_id) references products(id),
     foreign key(uid) references orders(uid)
 );
 
-insert into order_items(id, uid, amount) values(1, 'f19d71d1-a3ea-49ba-a3ee-1fc81ea7c5c0', 2);
-insert into order_items(id, uid, amount) values(2, 'f19d71d1-a3ea-49ba-a3ee-1fc81ea7c5c0', 2);
-insert into order_items(id, uid, amount) values(11, 'f19d71d1-a3ea-49ba-a3ee-1fc81ea7c5c0', 2);
+insert into order_items(product_id, uid, amount) values(1, 'f19d71d1-a3ea-49ba-a3ee-1fc81ea7c5c0', 2);
+insert into order_items(product_id, uid, amount) values(2, 'f19d71d1-a3ea-49ba-a3ee-1fc81ea7c5c0', 2);
+insert into order_items(product_id, uid, amount) values(11, 'f19d71d1-a3ea-49ba-a3ee-1fc81ea7c5c0', 2);
 
-insert into order_items(id, uid, amount) values(2, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 1);
-insert into order_items(id, uid, amount) values(1, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 1);
-insert into order_items(id, uid, amount) values(7, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 2);
-insert into order_items(id, uid, amount) values(8, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 1);
-insert into order_items(id, uid, amount) values(9, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 1);
-insert into order_items(id, uid, amount) values(10, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 1);
-insert into order_items(id, uid, amount) values(12, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 2);
+insert into order_items(product_id, uid, amount) values(2, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 1);
+insert into order_items(product_id, uid, amount) values(1, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 1);
+insert into order_items(product_id, uid, amount) values(7, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 2);
+insert into order_items(product_id, uid, amount) values(8, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 1);
+insert into order_items(product_id, uid, amount) values(9, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 1);
+insert into order_items(product_id, uid, amount) values(10, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 1);
+insert into order_items(product_id, uid, amount) values(12, '31df2d79-2a43-4da0-a17e-6c65f0a78320', 2);
 
-insert into order_items(id, uid, amount) values(5, '6810fb1d-14d5-4cd3-a30c-6ed2fb0e44bf', 1);
-insert into order_items(id, uid, amount) values(6, '6810fb1d-14d5-4cd3-a30c-6ed2fb0e44bf', 1);
-insert into order_items(id, uid, amount) values(7, '6810fb1d-14d5-4cd3-a30c-6ed2fb0e44bf', 2);
-insert into order_items(id, uid, amount) values(12, '6810fb1d-14d5-4cd3-a30c-6ed2fb0e44bf', 2);
+insert into order_items(product_id, uid, amount) values(5, '6810fb1d-14d5-4cd3-a30c-6ed2fb0e44bf', 1);
+insert into order_items(product_id, uid, amount) values(6, '6810fb1d-14d5-4cd3-a30c-6ed2fb0e44bf', 1);
+insert into order_items(product_id, uid, amount) values(7, '6810fb1d-14d5-4cd3-a30c-6ed2fb0e44bf', 2);
+insert into order_items(product_id, uid, amount) values(12, '6810fb1d-14d5-4cd3-a30c-6ed2fb0e44bf', 2);
 
 CREATE TABLE IF NOT EXISTS order_status (
   uid uuid primary key,

@@ -2,6 +2,7 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import xss from 'xss';
+import { join } from 'path';
 import { jwtOptions,
          requireAdmin,
          requireAuthentication,
@@ -34,7 +35,7 @@ async function listUsers(req, res) {
 
   const usersWithPage = addPageMetadata(
     users,
-    req.path,
+    join('/users', req.path),
     { offset, limit, length: users.items.length },
   );
 

@@ -120,11 +120,7 @@ export async function createCategory(req, res) {
 }
 
 // TODO: tengja image url við cloudinary.. og tryggja að image sé rétt type(image er character í db?)
-export async function createProduct(req, res) {
-  const {
-    title, price, description, image, category
-  } = req.body;
-
+export async function insertProduct({ title, price, description, image, category }) {
   try {
     const createdProduct = await singleQuery(
       `
@@ -136,30 +132,11 @@ export async function createProduct(req, res) {
     `,
       [xss(title), xss(price), xss(description), xss(image), xss(category)]
     );
-    return res.status(201).json(createdProduct);
+    return createdProduct.rows[0];
   } catch (e) {
     console.error('gat ekki búið til vöru', e);
   }
-  return res.status(500).json(null);
-}
-
-export async function deleteProduct(req, res) {
-  const { id } = req.params;
-
-  try {
-    const deletionRowCount = await deleteQuery(
-      'DELETE FROM products WHERE id = $1;', [id],
-    );
-
-    if (deletionRowCount === 0) {
-      return res.status(404).end();
-    }
-
-    return res.status(200).json({});
-  } catch (e) {
-    console.error('gat ekki eytt vöru', e);
-  }
-  return res.status(500).json(null);
+  return null;
 }
 
 export async function deleteCategory(req, res) {

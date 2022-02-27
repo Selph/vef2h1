@@ -9,6 +9,8 @@ import { isInvalid } from './api/template-helpers.js';
 import { router as menuRouter } from './api/menu.js';
 import { router as categoryRouter } from './api/categories.js';
 import { router as userRouter } from './api/users.js';
+import { router as cartRouter } from './api/cart.js';
+import { router as orderRouter } from './api/orders.js';
 
 
 dotenv.config();
@@ -44,9 +46,11 @@ app.get('/', async (req, res) => {
   res.json(JSON.parse(indexJson));
 });
 
-app.use('/menu', menuRouter);
+app.use('/menu',       menuRouter);
 app.use('/categories', categoryRouter);
-app.use('/users', userRouter)
+app.use('/users',      userRouter);
+app.use('/cart',       cartRouter)
+app.use('/orders',     orderRouter)
 
 app.use(cors);
 
