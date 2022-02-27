@@ -1,27 +1,64 @@
 # Vefforritun 2, 2022. Hópverkefni 1: Veitingastaðurinn RFC
 
-## Setup
+## Umhverfisbreytur
 
-Keyrt með:
+Eftirfarandi breyta er krafist:
+
+* `DATABASE_URL`
+  * Slóð á gagnagrunn með auðkenningu
+* `CLOUDINARY_URL`
+  * Slóð á Cloudinary uppsetningu með auðkenningu
+* `JWT_SECRET`
+  * Langur, handahófskenndur strengur fyrir leyndarmál sem notað er fyrir JWT token
+
+Eftirfarandi breytur eru valkvæmar:
+
+* `HOST`
+  * Gildi sem notað er til að útbúa slóð á vefþjón
+  * Sjálfgefið `127.0.0.1`
+* `PORT`
+  * Gildi fyrir port sem forrit keyrir á
+  * Sjálfgefið `3000`
+* `BASE_URL`
+  * Gildi fyrir slóð á vefþjón, á forminu `https://example.org`
+  * Notað fyrir lýsigögn (paging) fyrir síður
+  * Sjálfgefið óskilgreint
+* `JWT_TOKEN_LIFETIME`
+  * Hversu lengi JWT token er gildur
+  * Sjálfgefið sjö dagar eða `60 * 60 * 24 * 7` sekúndur
+* `BCRYPT_ROUNDS`
+  * Hversu oft á að hasha bcryptuð lykilorð
+  * Sjálfgefið `11`
+
+## Uppsetning
+
+1. Búa til gagnagrunn, t.d. `createdb 2019-h1-synilausn`
+2. Búa til Cloudinary aðgang
+3. Afrita `.env_example` í `.env` og setja upplýsingar fyrir
+  a. Gagnagrunn
+  b. Cloudinary
+4. Keyra `npm run setup` til að:
+  a. Útbúa gagnagrunn og fylla af gögnum búnum til með `faker`
+  b. Færa allar myndir úr `img` í Cloudinary
+  c. Útbúa grunn notendur
+  d. Útbúa pantanir og körfu fyrir notendur
 
 ```bash
+createdb 2019-h1-synilausn
+cp .env_example .env # Stilla breytur sem er krafist
 npm install
-createdb vef2h1
-# setja rétt DATABASE_URL í .env
-npm run setup
+npm test -s
+npm run setup -s
 npm run dev
 ```
 
-Uppsetning á heroku, gefið að appið sé til undir nafninu <APP> og þú sért loggedin á heroku cli:
+### Notendur
 
-```bash
-heroku git:remote -a <APP>
-heroku addons:create heroku-postgresql:hobby-dev
-git push heroku main
-heroku run npm run setup
-```
+* Stjórnandi með notandanafn `admin`, lykilorð `1234`
 
 ## Skipanir
+
+### Athuganir
 
 Til að athuga hvort test séu rétt útfærð keyra test og fyrir eslint keyra lint
 
@@ -30,12 +67,18 @@ npm run test
 npm run lint
 ```
 
+
+### Curl 
+
+TODO
+
 ## Tæki og tól
 
 ### Dependencies
 
 ```
 bcrypt
+cloudinary
 dotenv
 dotenv-cli
 express
@@ -59,26 +102,11 @@ node-fetch
 nodemon
 ```
 
-## Admin aðgangur
-
-notendanafn: `admin`
-lykilorð:    `1234`
-
-## env skrár
-
-Það þarf að setja réttar upplýsingar í .env og .env.test skrárnar:
-
-```
-DATABASE_URL
-JWT_SECRET
-TOKEN_LIFETIME
-```
-
 ## Heroku
 
 https://vef2h1-rfc.herokuapp.com
 
-> Útgáfa 0.4
+> Útgáfa 0.5
 
 | Útgáfa | Breyting      |
 | ------ | ------------- |
@@ -86,3 +114,4 @@ https://vef2h1-rfc.herokuapp.com
 | 0.2    | Base files    |
 | 0.3    | Database      |
 | 0.4    | Users         |
+| 0.5    | Menu          |
