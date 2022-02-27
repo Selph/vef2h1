@@ -96,6 +96,21 @@ export async function listCategories(req, res){
   return res.json(categories.rows);
 }
 
+export async function listCategory(req, res) {
+  const { id } = req.params;
+
+  const category = await singleQuery(
+    'SELECT id, title FROM categories WHERE id = $1',
+    [id],
+  );
+
+  if (!category) {
+    return res.status(404).json({ error: 'Flokkur fannst ekki' });
+  }
+
+  return res.json(category);
+}
+
 export async function createCategory(req, res) {
   const {
     title
@@ -119,25 +134,6 @@ export async function createCategory(req, res) {
   return res.status(500).json(null);
 }
 
-// TODO: tengja image url við cloudinary.. og tryggja að image sé rétt type(image er character í db?)
-export async function insertProduct({ title, price, description, image, category }) {
-  try {
-    const createdProduct = await singleQuery(
-      `
-      INSERT INTO products
-        (title, price, description, image, category)
-      VALUES
-        ($1, $2, $3, $4, $5)
-      RETURNING id, title, price, description, image, category;
-    `,
-      [xss(title), xss(price), xss(description), xss(image), xss(category)]
-    );
-    return createdProduct.rows[0];
-  } catch (e) {
-    console.error('gat ekki búið til vöru', e);
-  }
-  return null;
-}
 
 export async function deleteCategory(req, res) {
   const { id } = req.params;
@@ -156,6 +152,31 @@ export async function deleteCategory(req, res) {
     console.error('gat ekki eytt flokk', e);
   }
   return res.status(500).json(null);
+}
+
+export async function updateCategory(req, res) {
+  const { id } = req.params;
+  const { title } = req.body;
+
+  const category = await singleQuery(
+    'SELECT id, title FROM categories WHERE id = $1',
+    [id],
+  );
+
+  if (!category) {
+    return res.status(404).json({ error: 'Category not found' });
+  }
+
+
+  const q = `
+    UPDATE
+      categories
+    SET title = $1, updated = current_timestamp
+    WHERE id = $2
+    RETURNING id, title`;
+  const result = await query(q, [xss(title), id]);
+
+  return res.status(201).json(result.rows[0]);
 }
 
 export async function findById(id) {
