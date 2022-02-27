@@ -68,10 +68,6 @@ npm run lint
 ```
 
 
-### Curl 
-
-TODO
-
 ## Tæki og tól
 
 ### Dependencies
