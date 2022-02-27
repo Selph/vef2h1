@@ -95,6 +95,10 @@ async function createProductWithImage(req, res, next) {
 
   const validations = await validateProduct(product);
 
+  if (!hasImage) return res.status(400).json({
+    errors: 'product has to have image'
+  });
+
   if (hasImage) {
     if (!validateImageMimetype(mimetype)) {
       validations.push({

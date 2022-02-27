@@ -129,7 +129,6 @@ export const categoryValidator = body('price')
 export const MIMETYPES = [
   'image/jpeg',
   'image/png',
-  'image/gif',
 ];
 
 export function validateImageMimetype(mimetype) {
