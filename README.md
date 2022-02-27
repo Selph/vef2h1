@@ -32,16 +32,14 @@ Eftirfarandi breytur eru valkvæmar:
 
 ## Uppsetning
 
-1. Búa til gagnagrunn, t.d. `createdb 2019-h1-synilausn`
+1. Búa til gagnagrunn, t.d. `createdb vef-2022-h1`
 2. Búa til Cloudinary aðgang
 3. Afrita `.env_example` í `.env` og setja upplýsingar fyrir
   a. Gagnagrunn
   b. Cloudinary
 4. Keyra `npm run setup` til að:
-  a. Útbúa gagnagrunn og fylla af gögnum búnum til með `faker`
+  a. Útbúa gagnagrunn og fylla af gögnum
   b. Færa allar myndir úr `img` í Cloudinary
-  c. Útbúa grunn notendur
-  d. Útbúa pantanir og körfu fyrir notendur
 
 ```bash
 createdb 2019-h1-synilausn
