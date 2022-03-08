@@ -30,8 +30,10 @@ CREATE TABLE IF NOT EXISTS products (
     foreign key(category) references categories(id)
 );
 
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE TABLE IF NOT EXISTS baskets (
-  uid uuid primary key,
+  uid uuid primary key DEFAULT uuid_generate_v1(),
   created TIMESTAMP with time zone not null default current_timestamp
 );
 

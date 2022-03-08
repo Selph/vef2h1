@@ -126,6 +126,14 @@ export const categoryValidator = body('price')
   .isInt({ min: 1 })
   .withMessage('category must be an integer larger than 0')
 
+export const amountValidator = body('amount')
+  .isInt({ min: 1 })
+  .withMessage('amount must be an integer larger than 0')
+
+export const productIdValidator = body('id')
+  .isInt({ min: 1 })
+  .withMessage('product id must be and integer largen than 0')
+
 export const MIMETYPES = [
   'image/jpeg',
   'image/png',

@@ -32,7 +32,6 @@ async function listOrders(req,res) {
 }
 
 router.get('/',
-          requireAuthentication,
           requireAdmin,
           pagingQuerystringValidator,
           validationCheck,
