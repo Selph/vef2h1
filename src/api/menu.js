@@ -1,8 +1,9 @@
 import express from 'express';
 import { join } from 'path';
+import cloudinary from 'cloudinary';
+import xss from 'xss';
 import { catchErrors } from '../utils/catch-errors.js';
 import { query as dbQuery, pagedQuery, conditionalUpdate} from '../db.js';
-import cloudinary from 'cloudinary';
 import { addPageMetadata } from '../utils/addPageMetadata.js';
 import { validationCheck } from '../validation/helper.js';
 import { isInt,
@@ -10,11 +11,10 @@ import { isInt,
          isString,
          pagingQuerystringValidator,
          validateImageMimetype,
-         validateProduct } from '../validation/validators.js';
+         validateProduct,
+         MIMETYPES } from '../validation/validators.js';
 import { requireAdmin, requireAuthentication } from '../auth/passport.js';
-import xss from 'xss';
 import { withMulter } from '../utils/multer.js';
-import { MIMETYPES } from '../validation/validators.js';
 import { toPositiveNumberOrDefault } from '../utils/toPositiveNumberOrDefault.js';
 
 

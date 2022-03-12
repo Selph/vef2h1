@@ -55,7 +55,7 @@ export function requireNotSelf(req, res, next) {
   return passport.authenticate(
     'jwt',
     { session: false },
-    async (err, user, info) => {
+    async (err, user) => {
       if (err) {
         return next(err);
       }
@@ -78,7 +78,7 @@ export function requireSameUser(req, res, next) {
   return passport.authenticate(
     'jwt',
     { session: false },
-    async (err, user, info) => {
+    async (err, user) => {
       if (err) {
         return next(err);
       }

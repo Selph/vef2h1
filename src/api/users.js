@@ -9,12 +9,16 @@ import { jwtOptions,
          requireNotSelf,
          requireSameUser,
          tokenLifetime } from '../auth/passport.js';
-import { comparePasswords, findByUsername, pagedQuery, query } from '../db.js';
+import { comparePasswords,
+         findByUsername,
+         pagedQuery,
+         query,
+         findById,
+         conditionalUpdate } from '../db.js';
 import { sanitation } from '../validation/sanitation.js';
 import { pagingQuerystringValidator, validationUser } from '../validation/validators.js';
 import { validationCheck } from '../validation/helper.js';
 import { catchErrors } from '../utils/catch-errors.js';
-import { findById, conditionalUpdate } from '../db.js';
 import { isString } from '../utils/misc.js';
 import { addPageMetadata } from '../utils/addPageMetadata.js';
 
@@ -149,9 +153,6 @@ const patchUser = async (req,res) => {
     isString(body.email) ? xss(body.email) : null,
     isString(body.password) ? await bcrypt.hash(xss(body.password), 11) : null,
   ];
-
-  console.log(fields)
-  console.log(values)
 
   const result = await conditionalUpdate('users', id, fields, values);
 

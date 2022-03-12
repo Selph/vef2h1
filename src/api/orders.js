@@ -1,6 +1,6 @@
 import express from 'express';
 import { join } from 'path';
-import { requireAdmin, requireAuthentication } from '../auth/passport.js';
+import { requireAdmin } from '../auth/passport.js';
 import { pagingQuerystringValidator } from '../validation/validators.js';
 import { pagedQuery } from '../db.js';
 import { validationCheck } from '../validation/helper.js';

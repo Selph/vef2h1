@@ -1,10 +1,9 @@
 import express from 'express';
 import xss from 'xss';
 import { catchErrors } from '../utils/catch-errors.js';
-import { requireAdmin, requireAuthentication } from '../auth/passport.js';
+import { requireAdmin } from '../auth/passport.js';
 import {
   singleQuery,
-  pagedQuery,
   deleteQuery,
   query, } from '../db.js';
 

@@ -48,9 +48,7 @@ async function create() {
     console.error('Villa við senda myndir á Cloudinary:', e.message);
   }
 
-  console.log(images)
-
-  const rest = await createRest(images);
+  await createRest(images);
 
   const orders = await promises.readFile(insertFile)
 
