@@ -86,13 +86,13 @@ export function validateResourceNotExists(fetchResource) {
 
 export const usernameValidator = body('username')
   .if(isPatchingAllowAsOptional)
-  .isLength({ min: 1, max: 256 })
-  .withMessage('username is required, max 256 characters');
+  .isLength({ min: 1, max: 64 })
+  .withMessage('username is required, max 64 characters');
 
 export const nameValidator = body('name')
   .if(isPatchingAllowAsOptional)
-  .isLength({ min: 1, max: 256 })
-  .withMessage('name is required, max 256 characters');
+  .isLength({ min: 1, max: 64 })
+  .withMessage('name is required, max 64 characters');
 
 
 export const passwordValidator = body('password')
