@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import express from 'express';
+import { WebSocketServer } from 'ws';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { readFile } from './utils/fs-helpers.js';
@@ -74,7 +75,7 @@ app.use((err, req, res, next) => { // eslint-disable-line
   return res.status(500).json({ error: 'Internal server error' });
 });
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.info(`Server running at http://localhost:${port}/`);
 });
 
