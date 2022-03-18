@@ -88,14 +88,9 @@ async function updateCategory(req, res) {
   if (!category) {
     return res.status(404).json({ error: 'Flokkur fannst ekki' });
   }
-
-
   const q = `
     UPDATE
-      categories
-    SET title = $1, updated = current_timestamp
-    WHERE id = $2
-    RETURNING id, title`;
+      categories SET title = $1 WHERE id = $2 RETURNING id, title`;
   const result = await query(q, [xss(title), id]);
 
   return res.status(201).json(result.rows[0]);
@@ -105,4 +100,4 @@ router.get('/', catchErrors(listCategories));
 router.get('/:id', catchErrors(listCategory));
 router.post('/', requireAdmin, catchErrors(createCategory));
 router.delete('/:id', requireAdmin, catchErrors(deleteCategory));
-router.patch('/:id', catchErrors(updateCategory));
+router.patch('/:id', requireAdmin, catchErrors(updateCategory));
