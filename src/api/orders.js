@@ -1,6 +1,5 @@
 import express from 'express';
 import { join } from 'path';
-import xss from 'xss';
 import { requireAdmin } from '../auth/passport.js';
 import { nameValidator, pagingQuerystringValidator } from '../validation/validators.js';
 import { pagedQuery, query } from '../db.js';
@@ -113,23 +112,45 @@ async function getOrderStatus (req, res) {
 
 async function updateStatus(req, res) {
   const { id } = req.params;
-  const { status } = req.body;
+  const status = await query('SELECT status FROM order_status WHERE uid=$1',[id])
 
+  let stage = null;
+  switch(status.rows[0].status){
+    case 'NEW':
+      stage = 'PREPARE';
+      break;
+    case 'PREPARE':
+      stage = 'COOKING';
+      break;
+    case 'COOKING':
+      stage = 'READY';
+      break;
+    case 'READY':
+      stage = 'FINISHED';
+      break;
+    case 'FINISHED':
+      stage = 'FINISHED';
+      break;
+    default:
+      stage = 'NEW'
+      break;
+  }
   const q = `
   UPDATE order_status
     SET
       status= $1
   WHERE
     uid=$2
+  RETURNING status
   `;
 
-  const result = await query(q, [xss(status), id]);
+  const result = await query(q, [stage, id]);
 
-  if(result.rows[0] !== null) {
+  if(result) {
     return res.status(200).json(result.rows[0]);
   }
 
-  return res.status(400).json({ error: 'order not found'});
+  return res.status(404).json({ error: 'order not found'});
 }
 
 router.get('/',
