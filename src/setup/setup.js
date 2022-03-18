@@ -59,6 +59,7 @@ async function create() {
   await end();
 
   console.info('RFC gögn komin inn í gagnagrunn.')
+  console.info(__dirname)
 }
 
 create().catch((err) => {
