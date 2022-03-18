@@ -22,12 +22,13 @@ function requireEnv(vars = []) {
   }
 }
 
-requireEnv(['DATABASE_URL', 'CLOUDINARY_URL', 'IMAGE_FOLDER']);
+requireEnv(['DATABASE_URL', 'CLOUDINARY_URL']);
+
+const imageFolder = '../img/'
 
 const {
   DATABASE_URL: databaseUrl,
   CLOUDINARY_URL: cloudinaryUrl,
-  IMAGE_FOLDER: imageFolder,
 } = process.env;
 
 async function create() {
