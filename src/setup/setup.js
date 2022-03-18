@@ -22,7 +22,7 @@ function requireEnv(vars = []) {
   }
 }
 
-requireEnv(['DATABASE_URL', 'CLOUDINARY_URL']);
+requireEnv(['DATABASE_URL', 'CLOUDINARY_URL', 'IMAGE_FOLDER']);
 
 const {
   DATABASE_URL: databaseUrl,
