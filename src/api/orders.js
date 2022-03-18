@@ -1,5 +1,6 @@
 import express from 'express';
 import { join } from 'path';
+import patch from 'express-ws/lib/add-ws-method.js';
 import { requireAdmin } from '../auth/passport.js';
 import { nameValidator, pagingQuerystringValidator } from '../validation/validators.js';
 import { pagedQuery, query } from '../db.js';
@@ -8,6 +9,9 @@ import { catchErrors } from '../utils/catch-errors.js';
 import { addPageMetadata } from '../utils/addPageMetadata.js';
 
 export const router = express.Router();
+
+patch.default(express.Router);
+const wsConnection = new Map();
 
 async function listOrders(req,res) {
   const { offset = 0, limit = 10 } = req.query;
@@ -147,10 +151,26 @@ async function updateStatus(req, res) {
   const result = await query(q, [stage, id]);
 
   if(result) {
+    const connection = wsConnection.get(id);
+    if (connection) {
+      connection.forEach(ws => {
+        ws.send(JSON.stringify(result.rows));
+      });
+    }
     return res.status(200).json(result.rows[0]);
+
   }
 
   return res.status(404).json({ error: 'order not found'});
+}
+
+async function webSocketConnection(ws, req) {
+  const { id } = req.params;
+
+  wsConnection.set(id, new Set());
+  const newConnection = wsConnection.get(id);
+  newConnection.add(ws);
+  wsConnection.set(id, newConnection);
 }
 
 router.get('/',
@@ -165,3 +185,4 @@ router.post('/',
 router.get('/:id', catchErrors(listOrder));
 router.get('/:id/status', catchErrors(getOrderStatus));
 router.post('/:id/status', requireAdmin, catchErrors(updateStatus));
+router.ws('/:id', webSocketConnection);

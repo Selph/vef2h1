@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import WebSocketServer from 'ws';
+import expressWs from 'express-ws';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { readFile } from './utils/fs-helpers.js';
@@ -21,6 +21,7 @@ const {
 } = process.env;
 
 const app = express();
+expressWs(app);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -42,7 +43,6 @@ app.use((req, res, next) => {
 
 app.get('/', async (req, res) => {
   const path = dirname(fileURLToPath(import.meta.url));
-  console.log(join(path, './api/index.json'))
   const indexJson = await readFile(join(path, './api/index.json'));
   res.json(JSON.parse(indexJson));
 });
@@ -54,10 +54,6 @@ app.use('/cart',       cartRouter)
 app.use('/orders',     orderRouter)
 
 app.use(cors);
-
-app.locals = {
-  // TODO hjálparföll fyrir template
-};
 
 app.locals.isInvalid = isInvalid;
 
@@ -75,7 +71,7 @@ app.use((err, req, res, next) => { // eslint-disable-line
   return res.status(500).json({ error: 'Internal server error' });
 });
 
-const server = app.listen(port, () => {
+app.listen(port, () => {
   console.info(`Server running at http://localhost:${port}/`);
 });
 
