@@ -1,5 +1,7 @@
+/* eslint-disable no-underscore-dangle */
 import { promises } from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { isEmpty } from '../validation/validators.js'
 import { query, end } from '../db.js'
 import { uploadImagesFromDisk } from '../data/images.js'
@@ -25,6 +27,8 @@ function requireEnv(vars = []) {
 
 requireEnv(['DATABASE_URL', 'CLOUDINARY_URL']);
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const imageFolder = path.join(__dirname, '../img');
 
 const {
