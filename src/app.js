@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import { WebSocketServer } from 'ws';
+import WebSocketServer from 'ws';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { readFile } from './utils/fs-helpers.js';

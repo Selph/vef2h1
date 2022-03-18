@@ -18,8 +18,6 @@ async function createCart(req, res) {
   return res.status(201).json(result.rows);
 }
 
-
-// vantar heildarverð
 async function getCartId(req,res) {
 
   const { cartid } = req.params;
@@ -38,6 +36,9 @@ async function getCartId(req,res) {
     [cartid],
   );
 
+  if(!cart) {
+    return res.status(404).json({ error: 'cart not found'});
+  }
   return res.json(cart.rows);
 }
 

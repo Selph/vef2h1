@@ -3,8 +3,8 @@ import { join } from 'path';
 import xss from 'xss';
 import { requireAdmin } from '../auth/passport.js';
 import { nameValidator, pagingQuerystringValidator } from '../validation/validators.js';
-import { pagedQuery, query, singleQuery } from '../db.js';
-import { resourceExists, validationCheck } from '../validation/helper.js';
+import { pagedQuery, query } from '../db.js';
+import { validationCheck } from '../validation/helper.js';
 import { catchErrors } from '../utils/catch-errors.js';
 import { addPageMetadata } from '../utils/addPageMetadata.js';
 
@@ -71,19 +71,29 @@ async function createOrder(req, res) {
   return res.status(404).json({error: 'basket not found'})
 }
 
-async function listOrder( req, res) {
+async function listOrder(req, res) {
   const { id } = req.params;
 
-  const order = await query(
-    'SELECT o.uid, o.name, o.created, i.uid, i.product_id, i.amount, s.uid, s.status FROM orders o, order_items i, order_status s WHERE o.uid = i.uid AND o.uid = s.uid AND o.uid = $1',
-    [id],
+  const q = `
+  SELECT * FROM order_items
+  WHERE uid=$1
+  `;
+
+  const order = await query(`
+    SELECT o.uid, o.name, o.created, s.uid, s.status
+    FROM orders o, order_status s
+    WHERE o.uid = s.uid AND o.uid = $1
+    `,
+    [id]
   );
+
+  const items = await query(q,[id])
 
   if (!order) {
     return res.status(404).json({ error: 'order not found' });
   }
 
-  return res.json(order.rows[0]);
+  return res.json({ order: order.rows[0], items: items.rows });
 }
 
 async function getOrderStatus (req, res) {
