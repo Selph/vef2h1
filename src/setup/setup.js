@@ -25,15 +25,12 @@ function requireEnv(vars = []) {
   }
 }
 
-requireEnv(['DATABASE_URL', 'CLOUDINARY_URL']);
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const imageFolder = path.join(__dirname, '../img');
+requireEnv(['DATABASE_URL', 'CLOUDINARY_URL', 'IMAGE_FOLDER']);
 
 const {
   DATABASE_URL: databaseUrl,
   CLOUDINARY_URL: cloudinaryUrl,
+  IMAGE_FOLDER: imageFolder,
 } = process.env;
 
 async function create() {
