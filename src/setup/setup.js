@@ -1,4 +1,5 @@
 import { promises } from 'fs';
+import path from 'path';
 import { isEmpty } from '../validation/validators.js'
 import { query, end } from '../db.js'
 import { uploadImagesFromDisk } from '../data/images.js'
@@ -22,12 +23,13 @@ function requireEnv(vars = []) {
   }
 }
 
-requireEnv(['DATABASE_URL', 'CLOUDINARY_URL', 'IMAGE_FOLDER']);
+requireEnv(['DATABASE_URL', 'CLOUDINARY_URL']);
+
+const imageFolder = path.join(__dirname, '../img');
 
 const {
   DATABASE_URL: databaseUrl,
   CLOUDINARY_URL: cloudinaryUrl,
-  IMAGE_FOLDER: imageFolder,
 } = process.env;
 
 async function create() {
