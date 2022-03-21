@@ -2,7 +2,6 @@ import { readFile } from 'fs/promises';
 // eslint-disable-next-line import/no-unresolved
 import bcrypt from 'bcrypt';
 import pg from 'pg';
-import xss from 'xss';
 import { toPositiveNumberOrDefault } from './utils/toPositiveNumberOrDefault.js';
 
 const SCHEMA_FILE = './sql/insert.sql';
