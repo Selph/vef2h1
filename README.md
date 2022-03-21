@@ -239,16 +239,23 @@ dotenv
 dotenv-cli
 express
 express-validator
+express-ws
+multer
 passport
 passport-jwt
 passport-local
 pg
+ws
 xss
 ```
 
 ### Dev dependencies
 
-```concurrently
+```
+babel-cli
+babel-preset-env
+    
+concurrently
 eslint
 eslint-config-airbnb-base
 eslint-config-prettier
@@ -256,6 +263,8 @@ eslint-plugin-import
 jest
 node-fetch
 nodemon
+superagent
+supertest
 ```
 
 ## Heroku
