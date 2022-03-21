@@ -63,69 +63,81 @@ npm run dev
 * `/menu`
   * `GET` 
   ```bash 
-  curl --location --request GET 'http://localhost:3000/menu'```
+  curl --location --request GET 'http://localhost:3000/menu'
+  ```
   * `POST` 
   ```bash
   curl --location --request POST 'http://localhost:3000/menu/19/vefja.jpg' \
---header 'Authorization: Bearer >tokenhér<' \
---form 'title="VEGANOVICH Vefja"' \
---form 'price="1249"' \
---form 'description="RFC VEGAN kjúklingalundir, iceberg salat, salsa og létt piparmajónes. Allt vafið saman í heita, mjúkaristaða tortillu"' \
---form 'image=@"/path/to/file"' \
---form 'category="2"'```
+  --header 'Authorization: Bearer >tokenhér<' \
+  --form 'title="VEGANOVICH Vefja"' \
+  --form 'price="1249"' \
+  --form 'description="RFC VEGAN kjúklingalundir, iceberg salat, salsa og létt piparmajónes. Allt vafið saman í heita, mjúkaristaða tortillu"' \
+  --form 'image=@"/path/to/file"' \
+  --form 'category="2"'
+  ```
 * `/menu?category={category}`
   * `GET` 
   ```bash
-  curl --location --request GET 'http://localhost:3000/menu?category=1'```
+  curl --location --request GET 'http://localhost:3000/menu?category=1'
+  ```
 * `/menu?search={query}`
   * `GET` 
   ```bash
-  curl --location --request GET 'http://localhost:3000/menu?search=vegan'```
+  curl --location --request GET 'http://localhost:3000/menu?search=vegan'
+  ```
 * `/menu/:id`
   * `GET` 
   ```bash
-  curl --location --request GET 'http://localhost:3000/menu/10'```
+  curl --location --request GET 'http://localhost:3000/menu/10'
+  ```
   * `PATCH` 
   ```bash curl --location --request PATCH 'http://localhost:3000/menu/5' \
---header 'Authorization: Bearer >tokenhér<' \
---form 'title="Megavefjan"' \
---form 'price="1777"' \
---form 'description="Þessi er góð"' \
---form 'image=@"/Users/hugsnilld/Library/Mobile Documents/com~apple~CloudDocs/Skóli/Háskóli Íslands/Tölvunarfræði/2. Ár/Vefforritun 2/Hopverkefni 1/src/img/vefja.jpg"'```
+  --header 'Authorization: Bearer >tokenhér<' \
+  --form 'title="Megavefjan"' \
+  --form 'price="1777"' \
+  --form 'description="Þessi er góð"' \
+  --form 'image=@"/Users/hugsnilld/Library/Mobile Documents/com~apple~CloudDocs/Skóli/Háskóli Íslands/Tölvunarfræði/2. Ár/Vefforritun 2/Hopverkefni 1/src/img/vefja.jpg"'
+  ```
   * `DELETE` 
   ```bash
   curl --location --request DELETE 'http://localhost:3000/menu/4' \
---header 'Authorization: Bearer >tokenhér<'```
+  --header 'Authorization: Bearer >tokenhér<'
+  ```
 * `/categories`
   * `GET` 
   ```bash
-  curl --location --request GET 'http://localhost:3000/categories'```
+  curl --location --request GET 'http://localhost:3000/categories'
+  ```
   * `POST` 
   ```bash
   curl --location --request POST 'http://localhost:3000/categories' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "title": "Mjólkurvörur"
-}'```
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+      "title": "Mjólkurvörur"
+  }'
+  ```
 * `/categories/:id`
   * `PATCH` 
   ```bash
   curl --location --request PATCH 'http://localhost:3000/categories/?id=1' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "title": "hkgg"
-}'```
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+      "title": "hkgg"
+  }'
+  ```
   * `DELETE` 
   ```bash
   curl --location --request DELETE 'http://localhost:3000/categories/2' \
---data-raw ''```
+  --data-raw ''
+  ```
 
 #### Karfa, vefþjónustur
 
 * `/cart/:cartid`
   * `GET` 
   ```bash
-  curl --location --request GET 'http://localhost:3000/cart/f19d71d1-a3ea-49ba-a3ee-1fc81ea7c5c0'```
+  curl --location --request GET 'http://localhost:3000/cart/f19d71d1-a3ea-49ba-a3ee-1fc81ea7c5c0'
+  ```
 
 #### Pöntun, vefþjónustur
 
@@ -133,7 +145,8 @@ npm run dev
   * `GET` 
   ```bash
   curl --location --request GET 'http://localhost:3000/orders' \
---header 'Authorization: Bearer >token hér<'```
+  --header 'Authorization: Bearer >token hér<'
+  ```
 
 #### Notendur, vefþjónustur
 
@@ -141,53 +154,60 @@ npm run dev
   * `GET` 
   ```bash
   curl --location --request GET 'http://localhost:3000/users' \
---header 'Authorization: Bearer >tokenhér<'```
+  --header 'Authorization: Bearer >tokenhér<'
+  ```
 * `/users/:id`
   * `GET` 
   ```bash
   curl --location --request GET 'http://localhost:3000/users/2' \
---header 'Authorization: Bearer >tokenhér<'```
+  --header 'Authorization: Bearer >tokenhér<'
+  ```
   * `PATCH` 
   ```bash
   curl --location --request PATCH 'http://localhost:3000/users/2' \
---header 'Authorization: Bearer >tokenhér<'```
+  --header 'Authorization: Bearer >tokenhér<'
+  ```
 * `/users/register`
   * `POST` 
   ```bash
   curl --location --request POST 'http://localhost:3000/users/register' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "name": "Jonathan Joestar",
-    "username": "goldenwind",
-    "password": "dio",
-    "email": "goldenwindd@jojo.com"
-}'```
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+      "name": "Jonathan Joestar",
+      "username": "goldenwind",
+      "password": "dio",
+      "email": "goldenwindd@jojo.com"
+  }'
+  ```
 * `/users/login`
   * `POST` 
   ```bash
   curl --location --request POST 'http://localhost:3000/users/login' \
---header 'Authorization: Bearer >tokenhér<' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "username": "admin",
-    "password": "1234"
-}'```
+  --header 'Authorization: Bearer >tokenhér<' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+      "username": "admin",
+      "password": "1234"
+  }'
+  ```
 * `/users/me`
   * `GET` 
   ```bash
   curl --location --request GET 'http://localhost:3000/users/me' \
---header 'Authorization: Bearer >tokenhér<'```
+  --header 'Authorization: Bearer >tokenhér<'
+  ```
   * `PATCH` 
   ```bash
   curl --location --request PATCH 'http://localhost:3000/users/me' \
---header 'Authorization: Bearer >tokenhér<' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "password": "slavo",
-    "email": "bomkiss@admin.com"
-}'```
+  --header 'Authorization: Bearer >tokenhér<' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+      "password": "slavo",
+      "email": "bomkiss@admin.com"
+  }'
+  ```
 
-ATH það gæti þurft að nota tvöfaldar gæsalappir í Windows fyrir curl strengi.
+ATH það gæti þurft að nota tvöfaldar gæsalappir í Windows fyrir cURL strengi.
 
 ### Athuganir
 
