@@ -1,7 +1,5 @@
 /* eslint-disable no-underscore-dangle */
 import { promises } from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import { isEmpty } from '../validation/validators.js'
 import { query, end } from '../db.js'
 import { uploadImagesFromDisk } from '../data/images.js'
