@@ -23,6 +23,7 @@ const {
 const app = express();
 expressWs(app);
 
+app.use(cors);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
@@ -52,8 +53,6 @@ app.use('/categories', categoryRouter);
 app.use('/users',      userRouter);
 app.use('/cart',       cartRouter)
 app.use('/orders',     orderRouter)
-
-app.use(cors);
 
 app.locals.isInvalid = isInvalid;
 
